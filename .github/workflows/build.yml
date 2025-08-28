@@ -33,7 +33,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./${{ matrix.service }}
+          file: ./${{ matrix.service }}/dockerfile.prod # <--- Esta línea
           push: true
           tags: |
-            noinblake/${{ matrix.service }}:latest
-            noinblake/${{ matrix.service }}:v1
+            noinblake/${{ matrix.service }}-ketush:v1
+            noinblake/${{ matrix.service }}-ketush:v1
