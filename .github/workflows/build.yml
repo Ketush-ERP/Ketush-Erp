@@ -1,0 +1,39 @@
+name: Build & Push Images
+
+on:
+  push:
+    branches: [main] # solo cuando hagas push a main
+  workflow_dispatch: # también lo podés correr manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          [
+            auth-ms,
+            products-ms,
+            contacts-ms,
+            voucher-ms,
+            arca-ms,
+            client-gateway,
+          ]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push ${{ matrix.service }}
+        uses: docker/build-push-action@v4
+        with:
+          context: ./${{ matrix.service }}
+          push: true
+          tags: |
+            noinblake/${{ matrix.service }}:latest
+            noinblake/${{ matrix.service }}:v1

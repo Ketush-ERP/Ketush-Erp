@@ -164,20 +164,20 @@ services:
     networks:
       - ketshup-app
 
-  frontend-ketush:
-    image: frontend-ketush
-    environment:
-      - PORT=5175
-    ports:
-      - "5175:5175"
-    build:
-      context: ../KetushFrontend
-      dockerfile: dockerfile.prod
-    depends_on:
-      - client-gateway-ketush
-    restart: unless-stopped
-    networks:
-      - ketshup-app
+  # frontend-ketush:
+  #   image: frontend-ketush
+  #   environment:
+  #     - PORT=5175
+  #   ports:
+  #     - "5175:5175"
+  #   build:
+  #     context: ../KetushFrontend
+  #     dockerfile: dockerfile.prod
+  #   depends_on:
+  #     - client-gateway-ketush
+  #   restart: unless-stopped
+  #   networks:
+  #     - ketshup-app
 
 networks:
   ketshup-app:
