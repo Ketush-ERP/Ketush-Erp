@@ -251,6 +251,9 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
     const totalProducts = await this.eProduct.count({
       where: { available: true },
+      orderBy: {
+        description: 'asc',
+      },
     });
 
     const totalPages = Math.ceil(totalProducts / limit);
@@ -309,7 +312,12 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
   }
 
   async findByCode(code: string, throwIfNotFound = false) {
-    const product = await this.eProduct.findFirst({ where: { code } });
+    const product = await this.eProduct.findFirst({
+      where: { code },
+      orderBy: {
+        description: 'asc',
+      },
+    });
     if (!product && throwIfNotFound) {
       throw new RpcException({
         message: `[FIND_BY_CODE] Product with code ${code} not found`,
@@ -402,7 +410,10 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
       skip: (offset - 1) * limit,
       take: limit,
       where,
-      orderBy: orderPrice ? { price: orderPrice } : undefined,
+      orderBy: {
+        description: 'asc',
+        basePrice: orderPrice ? orderPrice : undefined,
+      },
       select: {
         id: true,
         supplierId: true,
